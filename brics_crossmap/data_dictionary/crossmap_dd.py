@@ -2,16 +2,18 @@ import os
 from dotenv import load_dotenv
 import openai
 
-from brics_tools.utils import helper
-from brics_tools.loaders.dictionary_loader import DictionaryLoader
-from brics_tools.document_creators.dictionary_document_creator import (
+from brics_crossmap.utils import helper
+from brics_crossmap.loaders.dictionary_loader import DictionaryLoader
+from brics_crossmap.document_creators.dictionary_document_creator import (
     DictionaryDocumentCreator,
 )
-from brics_tools.node_parsers.dictionary_node_parser import DictionaryNodeParser
-from brics_tools.index_managers.dictionary_index_manager import DictionaryIndexCreator
-from brics_tools.query_engines.dictionary_query_engine import DictionaryQueryEngine
+from brics_crossmap.node_parsers.dictionary_node_parser import DictionaryNodeParser
+from brics_crossmap.index_managers.dictionary_index_manager import (
+    DictionaryIndexCreator,
+)
+from brics_crossmap.query_engines.dictionary_query_engine import DictionaryQueryEngine
 
-# from brics_tools.service_contexts.factories.llm_service_factory import ServiceContextFactory
+# from brics_crossmap.service_contexts.factories.llm_service_factory import ServiceContextFactory
 
 
 load_dotenv()

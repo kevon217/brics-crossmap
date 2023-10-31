@@ -8,7 +8,7 @@ import pinecone
 import pandas as pd
 from tqdm import tqdm
 
-from brics_tools.data_dictionary.crossmap import log
+from brics_crossmap.data_dictionary.crossmap import log
 
 
 def fetch_id_metadata(index, cfg):

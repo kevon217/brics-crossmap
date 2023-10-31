@@ -6,7 +6,7 @@ load_dotenv()
 
 import pinecone
 
-from brics_tools.data_dictionary.crossmap import crossmap_logger, log
+from brics_crossmap.data_dictionary.crossmap import crossmap_logger, log
 
 
 @log(msg="Checking Pinecone credentials in config files or .env file")

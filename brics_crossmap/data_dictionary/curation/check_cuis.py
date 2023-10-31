@@ -7,9 +7,9 @@ import os
 import pandas as pd
 import numpy as np
 
-from brics_tools.utils import helper as helper
-from brics_tools.data_dictionary.curation import cur_logger, log, copy_log
-from brics_tools.data_dictionary.curation.utils import dictionary_functions as dd
+from brics_crossmap.utils import helper as helper
+from brics_crossmap.data_dictionary.curation import cur_logger, log, copy_log
+from brics_crossmap.data_dictionary.curation.utils import dictionary_functions as dd
 
 
 @log(msg="Checking CUIS in Data Dictionary Import File")

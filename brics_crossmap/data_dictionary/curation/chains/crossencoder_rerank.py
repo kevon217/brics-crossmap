@@ -9,8 +9,8 @@ from scrap.setup_chromadb.fitbir.data_dictionary.utils import (
     normalize_embeddings,
     embed_texts_in_batches,
 )
-from brics_tools.utils import helper
-from brics_tools.data_dictionary.crossmap import crossmap_logger, log, copy_log
+from brics_crossmap.utils import helper
+from brics_crossmap.data_dictionary.crossmap import crossmap_logger, log, copy_log
 from pathlib import Path
 
 

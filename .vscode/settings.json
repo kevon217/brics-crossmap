@@ -1,0 +1,12 @@
+{
+    "python.analysis.extraPaths": [
+        "${workspaceFolder}/brics_crossmap/",
+        "${workspaceFolder}/"
+    ],
+    "terminal.integrated.env.windows": {
+        "PYTHONPATH": "${workspaceFolder}/brics_crossmap/"
+    },
+    "terminal.integrated.cwd": "${workspaceFolder}/brics_crossmap/",
+    "python.envFile": "${workspaceFolder}/.env",
+    "jupyter.notebookFileRoot": "${workspaceFolder}/"
+  }

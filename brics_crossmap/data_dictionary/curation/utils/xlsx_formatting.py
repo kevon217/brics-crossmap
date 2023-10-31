@@ -6,7 +6,7 @@ Functions for formatting Excel curation file.
 
 from openpyxl.utils import get_column_letter
 
-from brics_tools.data_dictionary.curation import log
+from brics_crossmap.data_dictionary.curation import log
 
 
 # EXCEL FORMATTING

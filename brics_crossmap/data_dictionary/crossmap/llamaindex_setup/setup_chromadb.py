@@ -18,12 +18,12 @@ from llama_index.vector_stores import ChromaVectorStore
 import chromadb
 from langchain.embeddings.huggingface import HuggingFaceEmbeddings
 
-from brics_tools.data_dictionary.crossmap.setup_llamaindex import (
+from brics_crossmap.data_dictionary.crossmap.setup_llamaindex import (
     setup_index_logger,
     log,
     copy_log,
 )
-from brics_tools.utils import helper
+from brics_crossmap.utils import helper
 
 cfg = helper.compose_config(
     config_path="../configs/",

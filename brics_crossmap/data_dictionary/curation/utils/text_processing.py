@@ -13,8 +13,8 @@ import pandas as pd
 
 # import cchardet # TODO: may be useful in future
 
-from brics_tools.utils import helper
-from brics_tools.data_dictionary.curation import cur_logger, log, copy_log
+from brics_crossmap.utils import helper
+from brics_crossmap.data_dictionary.curation import cur_logger, log, copy_log
 
 
 # TEXT PROCESSING FUNCTIONS

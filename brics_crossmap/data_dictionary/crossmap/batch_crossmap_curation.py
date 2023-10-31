@@ -10,19 +10,19 @@ import pickle
 import pandas as pd
 from pathlib import Path
 
-from brics_tools.data_dictionary.crossmap import crossmap_logger, log, copy_log
-import brics_tools.utils.helper as helper
-import brics_tools.data_dictionary.curation.utils.process_data_dictionary as proc_dd
-import brics_tools.data_dictionary.curation.utils.curation_functions as cur
+from brics_crossmap.data_dictionary.crossmap import crossmap_logger, log, copy_log
+import brics_crossmap.utils.helper as helper
+import brics_crossmap.data_dictionary.curation.utils.process_data_dictionary as proc_dd
+import brics_crossmap.data_dictionary.curation.utils.curation_functions as cur
 
 # Semantic Search with Pinecone
-from brics_tools.data_dictionary.crossmap.utils.api_connection import (
+from brics_crossmap.data_dictionary.crossmap.utils.api_connection import (
     check_credentials,
     connect_to_pinecone,
 )
 
-from brics_tools.data_dictionary.crossmap.utils import builders
-from brics_tools.data_dictionary.crossmap.utils import runners as run
+from brics_crossmap.data_dictionary.crossmap.utils import builders
+from brics_crossmap.data_dictionary.crossmap.utils import runners as run
 
 cfg = helper.compose_config(
     overrides=[
@@ -98,7 +98,7 @@ def run_hybrid_ss_batch(cfg, **kwargs):
 
     # RETRIEVE UMLS VECTOR ID AS DICTIONARY
     ids = importlib.resources.read_binary(
-        "brics_tools.semantic_search.resources", "dict_umls_upsert_ids.pkl"
+        "brics_crossmap.semantic_search.resources", "dict_umls_upsert_ids.pkl"
     )
     dict_umls_upsert_ids = pickle.loads(ids)
     # dict_umls_upsert_ids = run.fetch_id_metadata(index, cfg) #TODO: need to work on this

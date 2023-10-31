@@ -27,7 +27,7 @@ from brics_crossmap.data_dictionary.crossmap.llamaindex_setup.utils import (
     DummyNodePostprocessor,
     node_results_to_dataframe,
 )
-from brics_tools.utils import helper
+from brics_crossmap.utils import helper
 from brics_crossmap.data_dictionary.crossmap import crossmap_logger, log, copy_log
 
 cfg = helper.compose_config(
@@ -54,7 +54,7 @@ def run_crossmap(df, cfg):
         ),
         embed_batch_size=cfg.indices.index.collections.embed.model_kwargs.batch_size,  # have to manual override defaults despite above
     )
-    service_context = ServiceContext.from_defaults(embed_model=embed_model)
+    service_context = ServiceContext.from_defaults(embed_model=embed_model, llm=None)
     set_global_service_context(service_context)
 
     # LOAD VECTOR STORE INDEX AND CREATE QUERY ENGINE

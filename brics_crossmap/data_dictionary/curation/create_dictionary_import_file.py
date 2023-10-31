@@ -6,9 +6,9 @@ Main script for creating dictionary import file from curated examples dictionary
 
 from pathlib import Path
 
-from brics_tools.utils import helper as helper
-from brics_tools.data_dictionary.curation import cur_logger, log, copy_log
-from brics_tools.data_dictionary.curation.utils import curation_functions as cur
+from brics_crossmap.utils import helper as helper
+from brics_crossmap.data_dictionary.curation import cur_logger, log, copy_log
+from brics_crossmap.data_dictionary.curation.utils import curation_functions as cur
 
 
 @log(msg="Creating dictionary import file")

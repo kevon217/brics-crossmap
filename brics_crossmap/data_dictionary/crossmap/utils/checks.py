@@ -7,7 +7,7 @@ Various functions for checking and manipulating vectors and tokens.
 import numpy as np
 from transformers import AutoTokenizer
 
-from brics_tools.data_dictionary.crossmap import log
+from brics_crossmap.data_dictionary.crossmap import log
 
 # VECTOR OPERATIONS
 

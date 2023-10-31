@@ -9,9 +9,9 @@ from functools import reduce
 import numpy as np
 import pandas as pd
 
-from brics_tools.data_dictionary.curation import cur_logger, log, copy_log
-from brics_tools.utils import helper as helper
-from brics_tools.data_dictionary.curation.utils import xlsx_formatting as xlsx
+from brics_crossmap.data_dictionary.curation import cur_logger, log, copy_log
+from brics_crossmap.utils import helper as helper
+from brics_crossmap.data_dictionary.curation.utils import xlsx_formatting as xlsx
 
 
 @log(msg="Adding search_ID column")

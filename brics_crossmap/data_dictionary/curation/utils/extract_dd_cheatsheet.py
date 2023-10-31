@@ -1,6 +1,6 @@
 import pandas as pd
-import brics_tools.data_dictionary.curation.utils.process_data_dictionary as proc_dd
-import brics_tools.utils.helper as helper
+import brics_crossmap.data_dictionary.curation.utils.process_data_dictionary as proc_dd
+import brics_crossmap.utils.helper as helper
 import re
 
 

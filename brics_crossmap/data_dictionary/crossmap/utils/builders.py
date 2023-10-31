@@ -9,8 +9,8 @@ from splade.models.transformer_rep import Splade
 from transformers import AutoTokenizer
 import torch
 
-from brics_tools.data_dictionary.crossmap import crossmap_logger, log
-from brics_tools.data_dictionary.crossmap.utils.checks import (
+from brics_crossmap.data_dictionary.crossmap import crossmap_logger, log
+from brics_crossmap.data_dictionary.crossmap.utils.checks import (
     normalize_unit_length,
 )
 
