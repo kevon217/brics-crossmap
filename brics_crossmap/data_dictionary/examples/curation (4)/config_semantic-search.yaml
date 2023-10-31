@@ -3,14 +3,19 @@ semantic_search:
     filepath_input: C:/Users/armengolkm/Desktop/VS_Code_Projects/BRICS/brics-crossmap/brics_crossmap/data_dictionary/examples/CNTR_DEs.csv
     directory_output: C:/Users/armengolkm/Desktop/VS_Code_Projects/BRICS/brics-crossmap/brics_crossmap/data_dictionary/examples/
     filepath_curation: C:/Users/armengolkm/Desktop/VS_Code_Projects/BRICS/brics-crossmap/brics_crossmap/data_dictionary/examples/curation
-      (1)
+      (4)
     embed:
       id_column: variable name
       columns:
       - title
+      - definition
     metadata_columns:
     - variable name
     - title
+    - definition
+    - permissible values
+    - permissible value descriptions
+    - preferred question text
   query:
     storage_path_root: C:/Users/armengolkm/Desktop/VS_Code_Projects/BRICS/brics-crossmap/brics_crossmap/data_dictionary/storage/fitbir
     storage_paths_indices: null
@@ -18,6 +23,9 @@ semantic_search:
       title_title:
       - title
       - title
+      definition_definition:
+      - definition
+      - definition
     similarity_top_k: 10
     rerank:
       cross_encoder:

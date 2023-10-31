@@ -1,5 +1,5 @@
 data_dictionary:
-  filepath_input:  'C:/Users/armengolkm/Desktop/VS_Code_Projects/BRICS/brics-crossmap/brics_crossmap/data_dictionary/examples/CNTR_DEs_3-DE_test.csv'
+  filepath_input:  'C:/Users/armengolkm/Desktop/VS_Code_Projects/BRICS/brics-crossmap/brics_crossmap/data_dictionary/examples/CNTR_DEs.csv'
   directory_output: 'C:/Users/armengolkm/Desktop/VS_Code_Projects/BRICS/brics-crossmap/brics_crossmap/data_dictionary/examples/'
   filepath_curation:
   embed:

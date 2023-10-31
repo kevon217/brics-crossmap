@@ -1,0 +1,10 @@
+defaults:
+  # - loaders: dictionary_loader
+  # - preprocessors: dictionary_preprocessor
+  # - document_creators: dictionary_document
+  # - node_parsers: dictionary_nodes
+  # - index_managers: dictionary_index
+  # - query_engines: dictionary_query_engine
+  # - vectordbs: chromadb
+  - semantic_search: crossmap_dd
+  - indices: /fitbir/data_dictionary/llamaindex_chromadb_PubMedBERT.yaml

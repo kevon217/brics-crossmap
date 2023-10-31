@@ -17,7 +17,7 @@ from llama_index.vector_stores import ChromaVectorStore
 import chromadb
 from langchain.embeddings.huggingface import HuggingFaceEmbeddings
 
-from brics_crossmap.data_dictionary.crossmap.llamaindex_setup import (
+from brics_crossmap.data_dictionary.crossmap.setup_llamaindex import (
     setup_index_logger,
     log,
     copy_log,

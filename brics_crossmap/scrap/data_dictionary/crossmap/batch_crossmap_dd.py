@@ -5,7 +5,6 @@ import numpy as np
 import pickle
 from pathlib import Path
 
-# Importing necessary modules for language embeddings and LlamaIndex framework.
 from langchain.embeddings.huggingface import HuggingFaceEmbeddings
 from llama_index import (
     LangchainEmbedding,
@@ -24,7 +23,6 @@ from llama_index import set_global_service_context
 
 import chromadb
 
-# Importing project-specific utilities for setting up and processing the crossmap.
 from brics_crossmap.data_dictionary.crossmap.llamaindex_setup.utils import (
     DummyNodePostprocessor,
     node_results_to_dataframe,
@@ -32,7 +30,6 @@ from brics_crossmap.data_dictionary.crossmap.llamaindex_setup.utils import (
 from brics_crossmap.utils import helper
 from brics_crossmap.data_dictionary.crossmap import crossmap_logger, log, copy_log
 
-# Load configuration settings from a YAML file to set parameters throughout the script.
 cfg = helper.compose_config(
     config_path="../configs/",
     config_name="config_crossmap",
@@ -42,56 +39,40 @@ cfg = helper.compose_config(
 
 @log(msg="Running Crossmapping on Index")
 def run_crossmap(df, cfg):
-    """
-    Core function to perform semantic-search based crossmapping of data dictionary variables.
-
-    Args:
-        df (pd.DataFrame): Dataframe containing data dictionary variables to be crossmapped.
-        cfg (configparser.ConfigParser): Configuration object containing settings for crossmapping.
-
-    Returns:
-        pd.DataFrame: Dataframe with crossmapping results.
-        configparser.ConfigParser: Configuration object, potentially with updates during processing.
-    """
-
-    # Set up the output directory based on the configuration settings.
+    # SET OUTPUT DIRECTORY
     output_dir = helper.create_folder(
         Path(cfg.semantic_search.data_dictionary.directory_output, "curation")
     )
     cfg.semantic_search.data_dictionary.filepath_curation = output_dir.as_posix()
 
-    # Initialize embedding model and service context for semantic search.
+    # LOAD SENTENCE TRANSFORMER EMBEDDING MODEL FOR SERVICE CONTEXT
     embed_model = LangchainEmbedding(
         HuggingFaceEmbeddings(
             model_name=cfg.indices.index.collections.embed.model_name,
             model_kwargs={},
             encode_kwargs=cfg.indices.index.collections.embed.model_kwargs,
         ),
-        embed_batch_size=cfg.indices.index.collections.embed.model_kwargs.batch_size,
+        embed_batch_size=cfg.indices.index.collections.embed.model_kwargs.batch_size,  # have to manual override defaults despite above
     )
     service_context = ServiceContext.from_defaults(embed_model=embed_model, llm=None)
     set_global_service_context(service_context)
 
-    # Load vector store index and create query engines for each collection in the database.
+    # LOAD VECTOR STORE INDEX AND CREATE QUERY ENGINE
     query_engines = {}
     storage_path_root = cfg.semantic_search.query.storage_path_root
     db = chromadb.PersistentClient(path=storage_path_root)
-
-    # Iterate through collections to set up query engines.
     for c in db.list_collections():
         crossmap_logger.info(f"Loading collection: {c}")
         collection_name = c.name
         collection = db.get_or_create_collection(collection_name)
         crossmap_logger.info(f"{collection_name} count: {collection.count()}")
-
-        # Create Vector Store Index for each collection.
         vector_store = ChromaVectorStore(chroma_collection=collection)
+        # storage_context = StorageContext.from_defaults(vector_store=vector_store)
         index = VectorStoreIndex.from_vector_store(
             vector_store=vector_store,
+            # storage_context=storage_context,
             service_context=service_context,
         )
-
-        # Set up the retriever and response synthesizer for querying.
         retriever = VectorIndexRetriever(
             index=index,
             similarity_top_k=cfg.semantic_search.query.similarity_top_k,
@@ -100,14 +81,10 @@ def run_crossmap(df, cfg):
         response_synthesizer = get_response_synthesizer(
             response_mode="no_text", service_context=service_context
         )
-
-        # Initialize rerank processor for refining search results.
         rerank = SentenceTransformerRerank(
             model=cfg.semantic_search.query.rerank.cross_encoder.model_name,
             top_n=cfg.semantic_search.query.rerank.cross_encoder.top_n,
         )
-
-        # Configure the query engine with the retriever and postprocessors.
         query_engine = RetrieverQueryEngine(
             retriever=retriever,
             response_synthesizer=response_synthesizer,
