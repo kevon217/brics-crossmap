@@ -1,0 +1,84 @@
+semantic_search:
+  data_dictionary:
+    filepath_input: C:/Users/Kevin/Desktop/Coding/BRICS/brics-crossmap/brics_crossmap/data_dictionary/examples/CNTR_DEs_3-DE_test.csv
+    directory_output: C:/Users/Kevin/Desktop/Coding/BRICS/brics-crossmap/brics_crossmap/data_dictionary/examples
+    filepath_curation: null
+    embed:
+      id_column: variable name
+      columns:
+      - title
+      - definition
+    metadata_columns:
+    - variable name
+    - title
+    - definition
+    - permissible values
+    - permissible value descriptions
+    - preferred question text
+  query:
+    storage_path_root: C:/Users/Kevin/Desktop/Coding/BRICS/brics-crossmap/brics_crossmap/data_dictionary/storage/fitbir/
+    storage_paths_indices: null
+    queries:
+      title_title:
+      - title
+      - title
+      definition_definition:
+      - definition
+      - definition
+    similarity_top_k: 10
+    rerank:
+      cross_encoder:
+        model_name: cross-encoder/stsb-distilroberta-base
+        top_n: 10
+    include:
+    - documents
+    - metadatas
+    - ids
+    where: null
+    where_document: null
+indices:
+  index:
+    index_id: fitbir_data_dictionary
+    summary: 'FITBIR Data Dictionary Embeddings:'
+    filepath_input: C:/Users/Kevin/Desktop/Coding/BRICS/brics-crossmap/brics_crossmap/data_dictionary/storage/fitbir/dataElementExport_2023-11-06.csv
+    filepath_update: null
+    storage_path_root: C:/Users/Kevin/Desktop/Coding/BRICS/brics-crossmap/brics_crossmap/data_dictionary/storage/fitbir/
+    storage_paths_indices: null
+    collections:
+      embed:
+        id_column: variable name
+        columns:
+        - title
+        - definition
+        model_name: pritamdeka/PubMedBERT-mnli-snli-scinli-scitail-mednli-stsb
+        model_version: null
+        model_kwargs:
+          batch_size: 500
+          device: cpu
+          normalize_embeddings: true
+      names:
+      - title
+      - definition
+      max_batch_size: 500
+      distance_metric:
+        hnsw:space: cosine
+      metadata_columns:
+      - variable name
+      - title
+      - element type
+      - definition
+      - short description
+      - datatype
+      - input restriction
+      - minimum value
+      - maximum value
+      - data element concept identifiers
+      - data element concept names
+      - permissible values
+      - permissible value descriptions
+      - permissible value concept identifiers
+      - permissible value concept names
+      - unit of measure
+      - preferred question text
+      - creation date
+      - last change date
