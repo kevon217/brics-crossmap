@@ -1,9 +1,9 @@
 index:
   index_id: 'fitbir_data_dictionary'
   summary: "FITBIR Data Dictionary Embeddings:"
-  filepath_input: 'C:/Users/Kevin/Desktop/Coding/BRICS/brics-crossmap/brics_crossmap/data_dictionary/storage/fitbir/dataElementExport_2023-11-06.csv'
-  filepath_update:
-  storage_path_root: 'C:/Users/Kevin/Desktop/Coding/BRICS/brics-crossmap/brics_crossmap/data_dictionary/storage/fitbir/'
+  filepath_input: 'C:/Users/Kevin/Desktop/Coding/BRICS/brics-crossmap/brics_crossmap/data_dictionary/storage/test/test.csv'
+  filepath_update: 'C:/Users/Kevin/Desktop/Coding/BRICS/brics-crossmap/brics_crossmap/data_dictionary/storage/test/update-upsert_test.csv'
+  storage_path_root: 'C:/Users/Kevin/Desktop/Coding/BRICS/brics-crossmap/brics_crossmap/data_dictionary/storage/test/'
   storage_paths_indices:
   collections:
     embed:

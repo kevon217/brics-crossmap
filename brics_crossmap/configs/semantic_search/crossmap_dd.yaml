@@ -1,6 +1,6 @@
 data_dictionary:
-  filepath_input:  'C:/Users/armengolkm/Desktop/VS_Code_Projects/BRICS/brics-crossmap/brics_crossmap/data_dictionary/examples/CNTR_DEs_3-DE_test.csv'
-  directory_output: 'C:/Users/armengolkm/Desktop/VS_Code_Projects/BRICS/brics-crossmap/brics_crossmap/data_dictionary/examples/'
+  filepath_input:  'C:/Users/Kevin/Desktop/Coding/BRICS/brics-crossmap/brics_crossmap/data_dictionary/examples/CNTR_DEs_3-DE_test.csv'
+  directory_output: 'C:/Users/Kevin/Desktop/Coding/BRICS/brics-crossmap/brics_crossmap/data_dictionary/examples'
   filepath_curation:
   embed:
     id_column: 'variable name'
@@ -16,7 +16,7 @@ data_dictionary:
   - 'preferred question text'
 
 query:
-  storage_path_root: 'C:/Users/armengolkm/Desktop/VS_Code_Projects/BRICS/brics-crossmap/brics_crossmap/data_dictionary/storage/fitbir'
+  storage_path_root: 'C:/Users/Kevin/Desktop/Coding/BRICS/brics-crossmap/brics_crossmap/data_dictionary/storage/fitbir/'
   storage_paths_indices:
   queries:
     title_title: [title, title]

@@ -1,19 +1,25 @@
-# BRICS Crossmap Tool
-The BRICS Crossmap Tool is a Python utility designed for semantic-search based crossmapping of data dictionary variable titles to BRICS data element titles. It leverages language model embeddings and vector database queries to facilitate this process.
+# brics_crossmap
+
+The **brics_crossmap** tool is a Python-based utility for semantically mapping individual metadata fields of a user's variables to corresponding metadata fields in BRICS data elements. It uses language model embeddings to encode the semantics of each individually specified metadata field and facilitates the one-to-one field mapping process through a vector database search and reranking pipeline. The tool includes features for setting up an initial index with the embedded data elements and provides functionality to update this index as new data becomes available or existing data is modified.
 
 ## Table of Contents
+- [Core Features](#core-features)
 - [Installation](#installation)
 - [Configuration](#configuration)
 - [Usage](#usage)
-- [Functionality](#functionality)
+- [Contact](#contact)
 
+## Core Features:
+- **Index Setup**: Initializes and builds a searchable index from a given data dictionary, preparing it for semantic search operations.
+- **Semantic Search**: Utilizes embedded language models to perform semantic queries, matching variable titles with high precision. Additionally, it employs a cross-encoder reranking mechanism to refine search results and enhance match accuracy.
+- **Index Updating**: Keeps the index current with a streamlined process for updating existing entries and adding new ones as the data dictionary evolves.
 
 ## Installation
 To set up the BRICS Crossmap Tool on your local machine, you can use either `virtualenv` or `Poetry` for managing your Python environment and dependencies. Follow these steps:
 
 ```bash
 # Clone the repository
-git clone [URL to repository]
+git clone https://github.com/kevon217/brics-crossmap
 
 # Navigate to the project directory
 cd brics-crossmap
@@ -40,69 +46,98 @@ poetry shell
 
 Ensure you have Python 3.8+ installed on your system, and you are using the correct version of `pip` associated with Python 3.8+ when using `virtualenv`, or the correct Python version set in `pyproject.toml` if using Poetry.
 
-Replace `[URL to repository]` with the actual URL of your Git repository. This provides users with the choice of environment and dependency management tools that best suit their workflow.
-
-
-Ensure you have Python 3.8+ installed on your system, and you are using the correct version of `pip` associated with Python 3.8+.
-
 ## Configuration
-Configure the tool to match your environment and needs by editing the `crossmap_dd.yaml` file. Here is an outline of the configuration file with explanations for each section:
+The configuration of the tool is managed by YAML files organized as follows:
 
-### Data Dictionary
-This section configures source file paths and specifies which columns to use for crossmapping.
+```plaintext
+configs/
+├── config.yaml                      # Main configuration file for global settings
+├── indices/                         # Contains configurations for indexing
+│   └── fitbir/                      # Specific configuration for the FITBIR index
+│       └── data_dictionary/
+│           ├── llamaindex_chromadb_PubMedBERT.yaml  # Configuration for LlamaIndex with PubMedBERT embeddings
+│           └── test.yaml                            # Test configurations for development purposes
+└── semantic_search/
+    └── crossmap_dd.yaml             # Configuration for crossmapping data dictionaries
+```
 
+Modify these files according to your requirements before running the scripts for indexing, crossmapping, or updating the vector database.
+
+
+### `config.yaml`
+```yaml
+defaults:
+  - semantic_search: crossmap_dd
+  - indices: /fitbir/data_dictionary/llamaindex_chromadb_PubMedBERT.yaml # Path to index configuration
+```
+### `llamaindex_chromadb_PubMedBERT.yaml`
+```yaml
+index:
+  index_id: 'fitbir_data_dictionary' # Unique identifier for the index
+  summary: "FITBIR Data Dictionary Embeddings:" # Description of the index
+  filepath_input: 'path/to/dataElementExport.csv' # Input CSV file for indexing
+  filepath_update: 'path/to/dataElementExport_updates.csv' # path for update CSV file when running update_index.py
+  storage_path_root: 'path/to/storage/fitbir/' # Root path for storage
+  collections:
+    embed:
+      id_column: 'variable name' # Column used as unique identifier for entries
+      columns: &columns # List of columns to embed
+        - 'title'
+        - 'definition'
+      model_name: 'embedding-model-name' # Name of the embedding model
+      model_kwargs: # Additional arguments for the embedding model
+        batch_size: 500
+        device: 'cpu'
+        normalize_embeddings: True
+    max_batch_size: 500 # Maximum size for processing batches (NOTE: chromadb has a batch size limit)
+    distance_metric: {"hnsw:space": "cosine"} # Metric used for vector comparisons
+    metadata_columns: # List of metadata columns associated with each entry
+      - 'variable name'
+      - 'title'
+      # ... other columns ...
+```
+### `crossmap_dd.yaml`
 ```yaml
 data_dictionary:
-  filepath_input: 'path/to/your/input.csv' # Path to the CSV file you want to crossmap
-  directory_output: 'path/to/your/output/directory' # Directory where the output will be saved
+  filepath_input:  'path/to/your/input.csv' # Source CSV file for crossmapping
+  directory_output: 'path/to/your/output/directory' # Directory to save output files
   embed:
-    id_column: 'variable name' # The unique identifier column in your data dictionary
-    columns: # The columns you want to use for the crossmapping
+    id_column: 'variable name' # Unique identifier column in the data dictionary
+    columns: # Columns used for crossmapping
       - 'title'
       - 'definition'
-  metadata_columns: # Additional metadata columns from source file to include in the output
+  metadata_columns: # Metadata columns to include in the output
     - 'variable name'
     - 'title'
     - 'definition'
-    - 'permissible values'
-    - 'permissible value descriptions'
-    - 'preferred question text'
-```
+    # ... other columns ...
 
-### Query
-This section specifies the vector database details and query parameters.
-
-```yaml
 query:
-  storage_path_root: 'path/to/vector/database' # Path to the vector database storing the BRICS data dictionary elements
+  storage_path_root: 'path/to/vector/database' # Path to the vector database (chroma.sqlite3)
   queries:
-    title_title: [title, title] # first entry is column name from input file, second entry is the name of the chromdb collection to query against
+    title_title: [title, title] # Mapping of queries to collection names
     definition_definition: [definition, definition]
   similarity_top_k: 10 # Number of top similar results to retrieve
   rerank:
     cross_encoder:
-      model_name: "cross-encoder/stsb-distilroberta-base" # Model used for reranking
-      top_n: 10 # Number of top results to consider in reranking
-  include: ['documents','metadatas','ids'] # Additional information to include in the results
+      model_name: "cross-encoder/stsb-distilroberta-base" # Model for reranking
+      top_n: 10 # Top N results to consider during reranking
+  include: ['documents','metadatas','ids'] # Additional data to include in the results
 ```
-
-Make sure to replace the placeholder paths with the actual paths relevant to your project setup.
 
 ## Usage
-Run the script using the following command from the project's root directory:
-
+After installation and proper yaml configuration, you can run the following scripts (**NOTE**: *you'll have to specify directory/file paths in yaml config files as modules currently don't support interactive directory/file selection*):
 ```bash
-python batch_crossmap_dd.py
+# Set up the initial index
+python data_dictionary/indexing/setup_index.py
+
+# Run a batch crossmapping
+python data_dictionary/batch_crossmap_dd.py
+
+# Update the vector database with new changes
+python data_dictionary/indexing/update_index.py
 ```
 
-Ensure that the configuration file `crossmap_dd.yaml` is correctly set before running the script.
+## Contact
 
-## Functionality
-The tool's functionality is configured to process a data dictionary for crossmapping against a BRICS data dictionary. It includes:
-
-- **Data Preprocessing**: Reads the input CSV and processes it according to the configuration.
-- **Semantic Search**: Executes vector-based searches using specified columns from the input data.
-- **Result Reranking**: Applies a cross-encoder model to refine the search results.
-- **Output Generation**: Outputs the results into a CSV file in the specified directory.
-
-For more information on how the tool processes and transforms the data, refer to the inline documentation within the script.
+This pipeline was created by [Kevin Armengol](mailto:kevin.armengol@gmail.com) but any future modifications or enhancements will be performed by [Maria Bagonis](mailto:maria.bagonis@nih.gov) and [Olga Vovk](mailto:olga.vovk@nih.gov)

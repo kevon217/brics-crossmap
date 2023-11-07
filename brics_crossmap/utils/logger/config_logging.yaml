@@ -52,7 +52,7 @@ loggers:
     level: INFO
     handlers: [file, console]
     propagate: False
-  setup_index_logger:
+  indexing_logger:
     level: INFO
     handlers: [file, console]
     propagate: False

@@ -1,9 +1,8 @@
 semantic_search:
   data_dictionary:
-    filepath_input: C:/Users/armengolkm/Desktop/VS_Code_Projects/BRICS/brics-crossmap/brics_crossmap/data_dictionary/examples/CNTR_DEs.csv
-    directory_output: C:/Users/armengolkm/Desktop/VS_Code_Projects/BRICS/brics-crossmap/brics_crossmap/data_dictionary/examples/
-    filepath_curation: C:/Users/armengolkm/Desktop/VS_Code_Projects/BRICS/brics-crossmap/brics_crossmap/data_dictionary/examples/curation
-      (4)
+    filepath_input: C:/Users/Kevin/Desktop/Coding/BRICS/brics-crossmap/brics_crossmap/data_dictionary/examples/CNTR_DEs_3-DE_test.csv
+    directory_output: C:/Users/Kevin/Desktop/Coding/BRICS/brics-crossmap/brics_crossmap/data_dictionary/examples
+    filepath_curation: C:/Users/Kevin/Desktop/Coding/BRICS/brics-crossmap/brics_crossmap/data_dictionary/examples/curation
     embed:
       id_column: variable name
       columns:
@@ -17,7 +16,7 @@ semantic_search:
     - permissible value descriptions
     - preferred question text
   query:
-    storage_path_root: C:/Users/armengolkm/Desktop/VS_Code_Projects/BRICS/brics-crossmap/brics_crossmap/data_dictionary/storage/fitbir
+    storage_path_root: C:/Users/Kevin/Desktop/Coding/BRICS/brics-crossmap/brics_crossmap/data_dictionary/storage/fitbir/
     storage_paths_indices: null
     queries:
       title_title:
@@ -40,8 +39,11 @@ semantic_search:
 indices:
   index:
     index_id: fitbir_data_dictionary
-    filepath_input: C:/Users/armengolkm/Desktop/VS_Code_Projects/BRICS/brics-crossmap/brics_crossmap/data_dictionary/storage/fitbir/FITBIR_DD_published_2023-07-21.csv
     summary: 'FITBIR Data Dictionary Embeddings:'
+    filepath_input: C:/Users/Kevin/Desktop/Coding/BRICS/brics-crossmap/brics_crossmap/data_dictionary/storage/fitbir/dataElementExport_2023-11-06.csv
+    filepath_update: null
+    storage_path_root: C:/Users/Kevin/Desktop/Coding/BRICS/brics-crossmap/brics_crossmap/data_dictionary/storage/fitbir/
+    storage_paths_indices: null
     collections:
       embed:
         id_column: variable name
@@ -57,6 +59,7 @@ indices:
       names:
       - title
       - definition
+      max_batch_size: 500
       distance_metric:
         hnsw:space: cosine
       metadata_columns:
@@ -79,5 +82,3 @@ indices:
       - preferred question text
       - creation date
       - last change date
-      storage_path_root: C:/Users/armengolkm/Desktop/VS_Code_Projects/BRICS/brics-crossmap/brics_crossmap/data_dictionary/storage/fitbir/
-      storage_paths_indices: null

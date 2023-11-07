@@ -8,5 +8,13 @@
     },
     "terminal.integrated.cwd": "${workspaceFolder}/brics_crossmap/",
     "python.envFile": "${workspaceFolder}/.env",
-    "jupyter.notebookFileRoot": "${workspaceFolder}/"
+    "jupyter.notebookFileRoot": "${workspaceFolder}/",
+    "python.venvPath": "C:/Users/Kevin/AppData/Local/pypoetry/Cache/virtualenvs",
+    "[Log]": {
+        "editor.wordWrap": "on"
+    },
+    "editor.wordWrap": "on",
+    "workbench.editor.wrapTabs": true,
+    "notebook.output.wordWrap": true,
+    "jupyter.interactiveWindow.textEditor.executeSelection": true
   }

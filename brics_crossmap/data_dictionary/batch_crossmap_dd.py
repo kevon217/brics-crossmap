@@ -1,3 +1,40 @@
+"""
+batch_crossmap_dd.py
+
+This script is designed to perform semantic search-based crossmapping of user data dictionary
+variables against the BRICS data dictionary data elements. It uses pre-trained language model
+embeddings and a vector database to find and rank the most semantically similar data elements
+from the BRICS dictionary for each user data dictionary variable.
+
+Prerequisites:
+- A local ChromaDB vector store initialized with BRICS data dictionary elements.
+- A configuration file specifying model names, embedding parameters, and paths to input and output directories.
+
+Parameters:
+- `filepath_input`: The path to the CSV file containing the user's data dictionary to be crossmapped.
+- `semantic_search`: Configuration settings related to the semantic search, including query settings and rerank parameters.
+
+Functions:
+- `run_crossmap`: Orchestrates the crossmapping process by setting up the service context,
+  loading vector store indices, creating query engines, performing semantic search, and reranking results.
+
+Execution:
+Run the script from the command line after ensuring the configuration file is set:
+
+    python batch_crossmap_dd.py
+
+The script outputs a CSV file with the crossmapping results and updates the configuration with the output paths.
+
+The crossmapping process includes the following steps:
+- Loading and preprocessing the input data dictionary CSV.
+- Setting up the embedding model and global service context for the LlamaIndex.
+- Creating query engines for each collection specified in the ChromaDB vector store.
+- Conducting semantic searches across the collections for each variable in the user's data dictionary.
+- Applying a cross-encoder reranking process to refine the search results.
+- Saving the crossmapping results to a CSV file and persisting the updated configuration.
+"""
+
+
 import pandas as pd
 import torch
 from tqdm import tqdm
@@ -25,17 +62,17 @@ from llama_index import set_global_service_context
 import chromadb
 
 # Importing project-specific utilities for setting up and processing the crossmap.
-from brics_crossmap.data_dictionary.crossmap.llamaindex_setup.utils import (
+from brics_crossmap.data_dictionary.utils.node_operations import (
     DummyNodePostprocessor,
     node_results_to_dataframe,
 )
 from brics_crossmap.utils import helper
-from brics_crossmap.data_dictionary.crossmap import crossmap_logger, log, copy_log
+from brics_crossmap.data_dictionary import crossmap_logger, log, copy_log
 
 # Load configuration settings from a YAML file to set parameters throughout the script.
 cfg = helper.compose_config(
     config_path="../configs/",
-    config_name="config_crossmap",
+    config_name="config",
     overrides=[],
 )
 
@@ -61,6 +98,7 @@ def run_crossmap(df, cfg):
     cfg.semantic_search.data_dictionary.filepath_curation = output_dir.as_posix()
 
     # Initialize embedding model and service context for semantic search.
+    crossmap_logger.info("Initializing embedding model and service context.")
     embed_model = LangchainEmbedding(
         HuggingFaceEmbeddings(
             model_name=cfg.indices.index.collections.embed.model_name,
@@ -73,6 +111,7 @@ def run_crossmap(df, cfg):
     set_global_service_context(service_context)
 
     # Load vector store index and create query engines for each collection in the database.
+    crossmap_logger.info("Loading vector store index and creating query engines.")
     query_engines = {}
     storage_path_root = cfg.semantic_search.query.storage_path_root
     db = chromadb.PersistentClient(path=storage_path_root)
@@ -116,6 +155,9 @@ def run_crossmap(df, cfg):
         query_engines[collection_name] = query_engine
 
     # EMBED + SEMANTIC SEARCH + CROSS ENCODER RERANKING
+    crossmap_logger.info(
+        "Starting semantic search and cross-encoder reranking process."
+    )
     dfs_curation = []
     id_column = cfg.semantic_search.data_dictionary.embed.id_column
     for col in tqdm(
@@ -154,6 +196,7 @@ def run_crossmap(df, cfg):
     )
 
     # Save the updated variables DataFrame
+    crossmap_logger.info("Saving crossmapping results to CSV.")
     df_curation.to_csv(
         Path(
             output_dir,
@@ -163,26 +206,28 @@ def run_crossmap(df, cfg):
     )
 
     # SAVE CONFIG
+    crossmap_logger.info("Saving updated configuration.")
     helper.save_config(
         cfg,
         output_dir,
         f"config_semantic-search.yaml",
     )
 
-    crossmap_logger.info("Crossmapping complete.")
+    crossmap_logger.info("Crossmapping process completed successfully.")
 
     return df_curation, cfg
 
 
 if __name__ == "__main__":
+    crossmap_logger.info("Starting the batch crossmapping process.")
     # LOAD DATA DICTIONARY
     crossmap_logger.info("Loading data dictionary for crossmapping")
     fp = cfg.semantic_search.data_dictionary.filepath_input
-    # fp = cfg.indices.index.filepath_input
     df = pd.read_csv(fp, usecols=cfg.semantic_search.data_dictionary.metadata_columns)
     df = df.dropna(how="any", subset=cfg.semantic_search.data_dictionary.embed.columns)
-    crossmap_logger.info(f"Data dictionary shape: {df.shape}")
-    # df = df.head(5)
+    crossmap_logger.info(f"Data dictionary loaded with shape: {df.shape}")
 
     # RUN CROSSMAPPING
+    crossmap_logger.info("Running crossmapping function.")
     df_curation, cfg = run_crossmap(df, cfg)
+    crossmap_logger.info("Batch crossmapping process finished.")

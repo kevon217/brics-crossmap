@@ -1,0 +1,3 @@
+defaults:
+  - semantic_search: crossmap_dd
+  - indices: /fitbir/data_dictionary/llamaindex_chromadb_PubMedBERT.yaml # /fitbir/data_dictionary/test.yaml #
